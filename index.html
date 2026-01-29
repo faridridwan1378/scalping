@@ -136,7 +136,7 @@
         .sig-tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 0.6rem; font-weight: 700; text-transform: uppercase; }
         .sig-tag.buy { background: rgba(0,255,136,0.2); color: var(--green); }
         .sig-tag.sell { background: rgba(255,71,87,0.2); color: var(--red); }
-        .sig-tag.neutral { background: rgba(139,148,158,0.2); color: var(--dim); }
+        .sig-tag.NETRAL { background: rgba(139,148,158,0.2); color: var(--dim); }
 
         /* Plan */
         .plan { background: var(--input); border-radius: 8px; padding: 5px 15px; }
@@ -581,15 +581,15 @@
             const avgV = v.slice(-20).reduce((a, b) => a + b, 0) / 20, lastV = v[last];
 
             const sigs = [];
-            sigs.push({ name: 'RSI', value: lastRSI.toFixed(1), icon: '📊', sig: lastRSI < 30 ? 'buy' : lastRSI > 70 ? 'sell' : 'neutral' });
-            let ms = 'neutral'; if (lastH > 0 && prevH <= 0) ms = 'buy'; else if (lastH < 0 && prevH >= 0) ms = 'sell'; else if (lastH > 0) ms = 'buy'; else if (lastH < 0) ms = 'sell';
+            sigs.push({ name: 'RSI', value: lastRSI.toFixed(1), icon: '📊', sig: lastRSI < 30 ? 'buy' : lastRSI > 70 ? 'sell' : 'NETRAL' });
+            let ms = 'NETRAL'; if (lastH > 0 && prevH <= 0) ms = 'buy'; else if (lastH < 0 && prevH >= 0) ms = 'sell'; else if (lastH > 0) ms = 'buy'; else if (lastH < 0) ms = 'sell';
             sigs.push({ name: 'MACD', value: lastH > 0 ? 'Bull' : 'Bear', icon: '📈', sig: ms });
             const emaX = ema9[last] > ema20[last]; sigs.push({ name: 'EMA', value: emaX ? 'Golden' : 'Death', icon: '✂️', sig: emaX ? 'buy' : 'sell' });
             sigs.push({ name: 'Trend', value: lastC > ema20[last] ? 'Up' : 'Down', icon: '📉', sig: lastC > ema20[last] ? 'buy' : 'sell' });
-            const vr = lastV / avgV; let vs = 'neutral'; if (vr > 1.5 && lastC > prevC) vs = 'buy'; else if (vr > 1.5) vs = 'sell';
+            const vr = lastV / avgV; let vs = 'NETRAL'; if (vr > 1.5 && lastC > prevC) vs = 'buy'; else if (vr > 1.5) vs = 'sell';
             sigs.push({ name: 'Vol', value: vr > 1.5 ? 'High' : 'Normal', icon: '📊', sig: vs });
             const mom = ((lastC - c[Math.max(0, last-10)]) / c[Math.max(0, last-10)]) * 100;
-            sigs.push({ name: 'Mom', value: (mom > 0 ? '+' : '') + mom.toFixed(1) + '%', icon: '⚡', sig: mom > 3 ? 'buy' : mom < -3 ? 'sell' : 'neutral' });
+            sigs.push({ name: 'Mom', value: (mom > 0 ? '+' : '') + mom.toFixed(1) + '%', icon: '⚡', sig: mom > 3 ? 'buy' : mom < -3 ? 'sell' : 'NETRAL' });
             sigs.push({ name: 'Action', value: lastC > prevC ? 'Up' : 'Down', icon: lastC > prevC ? '🟢' : '🔴', sig: lastC > prevC ? 'buy' : 'sell' });
             return { sigs, rsi, macd };
         }
@@ -601,7 +601,7 @@
             else if (buy >= 4) { type = 'buy'; text = 'BUY'; icon = '✅'; desc = 'Sinyal beli'; }
             else if (sell >= 5) { type = 'strong-sell'; text = 'STRONG SELL'; icon = '🔻'; desc = 'Sinyal bearish kuat'; }
             else if (sell >= 4) { type = 'sell'; text = 'SELL'; icon = '⚠️'; desc = 'Sinyal jual'; }
-            else { type = 'neutral'; text = 'NEUTRAL'; icon = '⏳'; desc = 'Tunggu konfirmasi'; }
+            else { type = 'NETRAL'; text = 'NETRAL'; icon = '⏳'; desc = 'Tunggu konfirmasi'; }
             return { type, text, icon, desc, score: `Buy: ${Math.round(buy/tot*100)}% | Sell: ${Math.round(sell/tot*100)}%` };
         }
 
@@ -860,4 +860,5 @@
         document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
+
 </html>
